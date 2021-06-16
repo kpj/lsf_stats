@@ -14,3 +14,17 @@ $ pip install lsf_stats
 
 
 ## Usage
+
+```bash
+$ lsf_stats --help
+Usage: lsf_stats [OPTIONS] COMMAND [ARGS]...
+
+  Summarize LSF job properties by parsing log files.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  gather     Aggregate information from log files in single dataframe.
+  summarize  Summarize and visualize aggregated information.
+```
