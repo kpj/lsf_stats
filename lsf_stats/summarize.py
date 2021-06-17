@@ -20,7 +20,18 @@ def duration_fmt(x, pos):
     return humanize.naturaldelta(x)
 
 
-def main(fname, max_job_count, query, outdir):
+def extract_wildcards(ser):
+    assert ser.shape[0] == 1
+    wc_str = ser.iloc[0]
+
+    for entry in wc_str.split(', '):
+        key, value = entry.split('=', 1)
+        ser[key] = value
+
+    return ser
+
+
+def main(fname, max_job_count, split_wildcards, query, outdir):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -40,6 +51,16 @@ def main(fname, max_job_count, query, outdir):
     df['max_memory_nat'] = df['max_memory'].apply(humanize.naturalsize)
 
     df['duration_nat'] = df['duration'].apply(humanize.naturaldelta)
+
+    # split wildcards
+    if split_wildcards:
+        df_wildcards = df['wildcards'].to_frame().apply(extract_wildcards, axis=1)
+        df = df.drop('wildcards', axis=1).merge(
+            df_wildcards,
+            left_index=True,
+            right_index=True,
+            suffixes=(None, '_wildcard'),
+        )
 
     # quick overview
     pyskim.skim(df)

@@ -28,6 +28,11 @@ def gather(directory, output):
     help='Indicate this maximum job count in plots.',
 )
 @click.option(
+    '--split-wildcards',
+    is_flag=True,
+    help='Split wildcards into individual dataframe columns.',
+)
+@click.option(
     '-q',
     '--query',
     default=None,
@@ -40,5 +45,5 @@ def gather(directory, output):
     help='Directory to save plots to.',
 )
 @click.argument('filename', type=click.Path(exists=True, dir_okay=False))
-def summarize(filename, max_job_count, query, output):
-    summarize_func(filename, max_job_count, query, output)
+def summarize(filename, max_job_count, split_wildcards, query, output):
+    summarize_func(filename, max_job_count, split_wildcards, query, output)
