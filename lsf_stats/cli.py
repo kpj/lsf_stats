@@ -28,11 +28,17 @@ def gather(directory, output):
     help='Indicate this maximum job count in plots.',
 )
 @click.option(
+    '-q',
+    '--query',
+    default=None,
+    help='Query to subset dataframe before summarizing.',
+)
+@click.option(
     '-o',
     '--output',
     default='plots/',
     help='Directory to save plots to.',
 )
 @click.argument('filename', type=click.Path(exists=True, dir_okay=False))
-def summarize(filename, max_job_count, output):
-    summarize_func(filename, max_job_count, output)
+def summarize(filename, max_job_count, query, output):
+    summarize_func(filename, max_job_count, query, output)

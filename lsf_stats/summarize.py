@@ -20,7 +20,7 @@ def duration_fmt(x, pos):
     return humanize.naturaldelta(x)
 
 
-def main(fname, max_job_count, outdir):
+def main(fname, max_job_count, query, outdir):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -28,7 +28,8 @@ def main(fname, max_job_count, outdir):
     df = pd.read_csv(fname, parse_dates=['date'])
     df.dropna(inplace=True)
 
-    # df = df[~df['note'].str.contains('exit code 143')]
+    if query is not None:
+        df = df.query(query).copy()
 
     # convert MB to Bytes
     df['avg_memory'] *= 1_000_000
