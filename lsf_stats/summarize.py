@@ -31,7 +31,7 @@ def extract_wildcards(ser):
     return ser
 
 
-def main(fname, max_job_count, split_wildcards, query, outdir):
+def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -69,17 +69,17 @@ def main(fname, max_job_count, split_wildcards, query, outdir):
     fig, ax_list = plt.subplots(ncols=2, figsize=(8 * 2, 6), constrained_layout=True)
 
     ax = ax_list[0]
-    sns.histplot(data=df, x='duration', hue='note', log_scale=True, ax=ax)
+    sns.histplot(data=df, x='duration', hue=grouping_variable, log_scale=True, ax=ax)
     ax.xaxis.set_major_formatter(duration_fmt)
     ax.set_xlabel('Job Runtime')
 
     ax = ax_list[1]
-    sns.histplot(data=df, x='avg_memory', hue='note', log_scale=True, ax=ax)
+    sns.histplot(data=df, x='avg_memory', hue=grouping_variable, log_scale=True, ax=ax)
     ax.xaxis.set_major_formatter(size_fmt)
     ax.set_xlabel('Job Average Memory Requirements')
 
     # ax = ax_list[2]
-    # sns.histplot(data=df, x='max_memory', hue='note', log_scale=True, ax=ax)
+    # sns.histplot(data=df, x='max_memory', hue=grouping_variable, log_scale=True, ax=ax)
     # ax.xaxis.set_major_formatter(size_fmt)
 
     fig.savefig(outdir / 'overview.pdf')
@@ -87,7 +87,7 @@ def main(fname, max_job_count, split_wildcards, query, outdir):
     # memory vs duration scatterplot
     fig, ax = plt.subplots(figsize=(8, 6), constrained_layout=True)
 
-    sns.scatterplot(data=df, x='duration', y='avg_memory', hue='note')
+    sns.scatterplot(data=df, x='duration', y='avg_memory', hue=grouping_variable)
 
     ax.xaxis.set_major_formatter(duration_fmt)
     ax.yaxis.set_major_formatter(size_fmt)
@@ -95,13 +95,31 @@ def main(fname, max_job_count, split_wildcards, query, outdir):
     fig.savefig(outdir / 'scatterplot.pdf')
 
     # successful job counts
+    tmp = (
+        df[df['successful']]
+        .sort_values('date')
+        .drop_duplicates(subset=['wildcards'])
+        .assign(date_hour=df['date'].dt.round('H'))
+    )
+
+    if grouping_variable is None:
+        tmp_grp = tmp.groupby('date_hour').size()
+    else:
+        tmp_grp = (
+            tmp.groupby([grouping_variable, 'date_hour'])
+            .size()
+            .reset_index()
+            .pivot(columns=[grouping_variable], index=['date_hour'])
+            .fillna(0)
+        )
+
+        tmp_grp.columns = tmp_grp.columns.droplevel(0)
+
+    df_jobcounts = tmp_grp.cumsum()
+
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    df[df['successful']].drop_duplicates(subset=['wildcards']).assign(
-        date_hour=df['date'].dt.round('H')
-    ).groupby('date_hour').size().cumsum().plot(
-        xlabel='Date', ylabel='Number of successful jobs', ax=ax
-    )
+    df_jobcounts.plot(xlabel='Date', ylabel='Number of successful jobs', ax=ax)
 
     if max_job_count is not None:
         ax.axhline(int(max_job_count), color='red', ls='dashed')
