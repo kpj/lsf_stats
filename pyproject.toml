@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lsf_stats"
-version = "0.1.0"
+version = "0.2.0"
 description = "Summarize LSF job properties by parsing log files."
 license = "MIT"
 authors = ["kpj <kim.philipp.jablonski@gmail.com>"]
