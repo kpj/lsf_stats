@@ -28,3 +28,32 @@ Commands:
   gather     Aggregate information from log files in single dataframe.
   summarize  Summarize and visualize aggregated information.
 ```
+
+### Example
+
+Assume that you executed your Snakemake workflow using the [lsf-profile](https://github.com/Snakemake-Profiles/lsf) and all generated log files are stored in the directory `./logs/`:
+```bash
+$ snakemake --profile lsf
+[..]
+```
+
+You can then quickly aggregate resource, rule and other types of information about the workflow execution into a single dataframe:
+```bash
+$ lsf_stats gather -o workflow_stats.csv.gz ./logs/
+[..]
+```
+
+This dataframe can then be summarized in various ways:
+```bash
+$ lsf_stats summarize \
+    --query 'note == "Successfully completed."' \
+    --split-wildcards \
+    --grouping-variable category \
+    workflow_stats.csv.gz
+[..]
+```
+
+For example, the following plots will be generated:
+Job execution                                 |  Job resources
+:--------------------------------------------:|:----------------------------------------:
+![Job execution](gallery/job_completions.png) | ![Job resources](gallery/scatterplot.png)
