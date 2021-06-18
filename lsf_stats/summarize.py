@@ -42,9 +42,6 @@ def main(
     df = pd.read_csv(fname, parse_dates=['date'])
     df.dropna(inplace=True)
 
-    if query is not None:
-        df = df.query(query).copy()
-
     # convert MB to Bytes
     df['avg_memory'] *= 1_000_000
     df['max_memory'] *= 1_000_000
@@ -64,6 +61,10 @@ def main(
             right_index=True,
             suffixes=(None, '_wildcard'),
         )
+
+    # apply query
+    if query is not None:
+        df = df.query(query).copy()
 
     # quick overview
     pyskim.skim(df)
