@@ -46,7 +46,7 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
     df['avg_memory'] *= 1_000_000
     df['max_memory'] *= 1_000_000
 
-    # improve readbility
+    # improve readability
     df['avg_memory_nat'] = df['avg_memory'].apply(humanize.naturalsize)
     df['max_memory_nat'] = df['max_memory'].apply(humanize.naturalsize)
 
