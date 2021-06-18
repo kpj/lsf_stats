@@ -87,7 +87,14 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
     # memory vs duration scatterplot
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    sns.scatterplot(data=df, x='duration', y='avg_memory', hue=grouping_variable, ax=ax)
+    sns.scatterplot(
+        data=df,
+        x='duration',
+        y='avg_memory',
+        hue=grouping_variable,
+        ax=ax,
+        rasterized=df.shape[0] > 15_000,
+    )
 
     if grouping_variable is not None:
         ax.legend(title=grouping_variable, bbox_to_anchor=(1.05, 1), loc='upper left')
