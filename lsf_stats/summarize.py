@@ -94,10 +94,9 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
 
     fig.savefig(outdir / 'scatterplot.pdf')
 
-    # successful job counts
+    # plot job counts
     tmp = (
-        df[df['successful']]
-        .sort_values('date')
+        df.sort_values('date')
         .drop_duplicates(subset=['wildcards'])
         .assign(date_hour=df['date'].dt.round('H'))
     )
@@ -119,7 +118,7 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
 
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    df_jobcounts.plot(xlabel='Date', ylabel='Number of successful jobs', ax=ax)
+    df_jobcounts.plot(xlabel='Date', ylabel='Number of jobs', ax=ax)
 
     if max_job_count is not None:
         ax.axhline(int(max_job_count), color='red', ls='dashed')
