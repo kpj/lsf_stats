@@ -85,14 +85,17 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
     fig.savefig(outdir / 'overview.pdf')
 
     # memory vs duration scatterplot
-    fig, ax = plt.subplots(figsize=(8, 6), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(8, 6))
 
-    sns.scatterplot(data=df, x='duration', y='avg_memory', hue=grouping_variable)
+    sns.scatterplot(data=df, x='duration', y='avg_memory', hue=grouping_variable, ax=ax)
+
+    if grouping_variable is not None:
+        ax.legend(title=grouping_variable, bbox_to_anchor=(1.05, 1), loc='upper left')
 
     ax.xaxis.set_major_formatter(duration_fmt)
     ax.yaxis.set_major_formatter(size_fmt)
 
-    fig.savefig(outdir / 'scatterplot.pdf')
+    fig.savefig(outdir / 'scatterplot.pdf', bbox_inches='tight', pad_inches=0)
 
     # plot job counts
     tmp = (
@@ -120,8 +123,10 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
 
     df_jobcounts.plot(xlabel='Date', ylabel='Number of jobs', ax=ax)
 
+    if grouping_variable is not None:
+        ax.legend(title=grouping_variable, bbox_to_anchor=(1.05, 1), loc='upper left')
+
     if max_job_count is not None:
         ax.axhline(int(max_job_count), color='red', ls='dashed')
 
-    fig.tight_layout()
-    fig.savefig(outdir / 'job_completions.pdf')
+    fig.savefig(outdir / 'job_completions.pdf', bbox_inches='tight', pad_inches=0)
