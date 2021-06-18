@@ -24,15 +24,15 @@ def parse_cluster_info(entry):
     successful = 'Successfully completed.' in txt
 
     try:
-        note = re.search(
+        status = re.search(
             re.compile(
-                r'-+.*-+\n\n(?P<note>.+)\n\nResource usage summary:',
+                r'-+.*-+\n\n(?P<status>.+)\n\nResource usage summary:',
                 re.MULTILINE | re.DOTALL,
             ),
             txt,
-        ).group('note')
+        ).group('status')
     except AttributeError:
-        note = pd.NA
+        status = pd.NA
 
     try:
         duration = float(
@@ -59,7 +59,7 @@ def parse_cluster_info(entry):
         'duration': duration,
         'avg_memory': avg_memory,
         'max_memory': max_memory,
-        'note': note,
+        'status': status,
     }
 
 

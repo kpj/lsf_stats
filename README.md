@@ -46,7 +46,7 @@ $ lsf_stats gather -o workflow_stats.csv.gz ./logs/
 This dataframe can then be summarized in various ways:
 ```bash
 $ lsf_stats summarize \
-    --query 'note == "Successfully completed."' \
+    --query 'status == "Successfully completed."' \
     --split-wildcards \
     --grouping-variable category \
     workflow_stats.csv.gz
