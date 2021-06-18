@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
 import pyskim
+import IPython
 import humanize
 
 
@@ -31,7 +32,9 @@ def extract_wildcards(ser):
     return ser
 
 
-def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir):
+def main(
+    fname, max_job_count, split_wildcards, grouping_variable, query, outdir, interactive
+):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -137,3 +140,7 @@ def main(fname, max_job_count, split_wildcards, grouping_variable, query, outdir
         ax.axhline(int(max_job_count), color='red', ls='dashed')
 
     fig.savefig(outdir / 'job_completions.pdf', bbox_inches='tight', pad_inches=0)
+
+    # enter interactive shell if requested
+    if interactive:
+        IPython.embed()

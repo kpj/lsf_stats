@@ -49,10 +49,27 @@ def gather(directory, output):
     default='plots/',
     help='Directory to save plots to.',
 )
+@click.option(
+    '--interactive',
+    is_flag=True,
+    help='Drop into interactive shell after creating summaries.',
+)
 @click.argument('filename', type=click.Path(exists=True, dir_okay=False))
 def summarize(
-    filename, max_job_count, split_wildcards, grouping_variable, query, output
+    filename,
+    max_job_count,
+    split_wildcards,
+    grouping_variable,
+    query,
+    output,
+    interactive,
 ):
     summarize_func(
-        filename, max_job_count, split_wildcards, grouping_variable, query, output
+        filename,
+        max_job_count,
+        split_wildcards,
+        grouping_variable,
+        query,
+        output,
+        interactive,
     )
