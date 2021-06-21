@@ -124,7 +124,13 @@ def main(
     fig.savefig(outdir / 'scatterplot.pdf', bbox_inches='tight', pad_inches=0)
 
     # plot job counts
-    tmp = df.sort_values('date').assign(date_group=lambda x: x['date'].dt.round('S'))
+    df['date_job_finished'] = df['date'] + df['duration'].apply(
+        lambda x: pd.Timedelta(seconds=x)
+    )
+
+    tmp = df.sort_values('date_job_finished').assign(
+        date_group=lambda x: x['date_job_finished'].dt.round('S')
+    )
 
     if grouping_variable is None:
         tmp_grp = tmp.groupby('date_group').size()
