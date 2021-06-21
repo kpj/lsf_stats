@@ -114,7 +114,7 @@ def main(
     # plot job counts
     tmp = (
         df.sort_values('date')
-        .assign(date_group=df['date'].dt.round('S'))
+        .assign(date_group=lambda x: x['date'].dt.round('S'))
     )
 
     if grouping_variable is None:
