@@ -115,17 +115,17 @@ def main(
     tmp = (
         df.sort_values('date')
         .drop_duplicates(subset=['wildcards'])
-        .assign(date_hour=df['date'].dt.round('H'))
+        .assign(date_group=df['date'].dt.round('S'))
     )
 
     if grouping_variable is None:
-        tmp_grp = tmp.groupby('date_hour').size()
+        tmp_grp = tmp.groupby('date_group').size()
     else:
         tmp_grp = (
-            tmp.groupby([grouping_variable, 'date_hour'])
+            tmp.groupby([grouping_variable, 'date_group'])
             .size()
             .reset_index()
-            .pivot(columns=[grouping_variable], index=['date_hour'])
+            .pivot(columns=[grouping_variable], index=['date_group'])
             .fillna(0)
         )
 
