@@ -114,7 +114,6 @@ def main(
     # plot job counts
     tmp = (
         df.sort_values('date')
-        .drop_duplicates(subset=['wildcards'])
         .assign(date_group=df['date'].dt.round('S'))
     )
 
