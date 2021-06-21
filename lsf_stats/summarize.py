@@ -112,10 +112,7 @@ def main(
     fig.savefig(outdir / 'scatterplot.pdf', bbox_inches='tight', pad_inches=0)
 
     # plot job counts
-    tmp = (
-        df.sort_values('date')
-        .assign(date_group=lambda x: x['date'].dt.round('S'))
-    )
+    tmp = df.sort_values('date').assign(date_group=lambda x: x['date'].dt.round('S'))
 
     if grouping_variable is None:
         tmp_grp = tmp.groupby('date_group').size()
