@@ -66,6 +66,18 @@ def main(
     if query is not None:
         df = df.query(query).copy()
 
+    # handle grouping variable
+    if len(grouping_variable) > 0:
+        idx_list = df[list(grouping_variable)].dropna().index
+        df = df.loc[idx_list].copy()
+
+        groups = df[list(grouping_variable)].apply(lambda x: '\n'.join(x), axis=1)
+
+        grouping_variable = ', '.join(grouping_variable)
+        df[grouping_variable] = groups
+    else:
+        grouping_variable = None
+
     # quick overview
     pyskim.skim(df)
 

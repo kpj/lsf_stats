@@ -34,8 +34,8 @@ def gather(directory, output):
 )
 @click.option(
     '--grouping-variable',
-    default=None,
-    help='Stratify plots by this column.',
+    multiple=True,
+    help='Stratify plots by this column (can be used multiple times).',
 )
 @click.option(
     '-q',
