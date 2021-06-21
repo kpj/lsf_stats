@@ -22,7 +22,8 @@ Usage: lsf_stats [OPTIONS] COMMAND [ARGS]...
   Summarize LSF job properties by parsing log files.
 
 Options:
-  --help  Show this message and exit.
+  --version  Show the version and exit.
+  --help     Show this message and exit.
 
 Commands:
   gather     Aggregate information from log files in single dataframe.

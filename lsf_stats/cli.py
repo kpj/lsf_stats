@@ -5,6 +5,7 @@ from .summarize import main as summarize_func
 
 
 @click.group(help='Summarize LSF job properties by parsing log files.')
+@click.version_option()
 def cli():
     pass
 
