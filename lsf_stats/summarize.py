@@ -130,6 +130,9 @@ def main(
 
         tmp_grp.columns = tmp_grp.columns.droplevel(0)
 
+    tmp_grp.loc[tmp_grp.index.min() - pd.Timedelta(seconds=1)] = 0
+    tmp_grp.sort_index(inplace=True)
+
     df_jobcounts = tmp_grp.cumsum()
 
     fig, ax = plt.subplots(figsize=(8, 6))
