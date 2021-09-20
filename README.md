@@ -55,6 +55,6 @@ $ lsf_stats summarize \
 ```
 
 For example, the following plots will be generated:
-Job execution                                 |  Job resources
-:--------------------------------------------:|:----------------------------------------:
-![Job execution](gallery/job_completions.png) | ![Job resources](gallery/scatterplot.png)
+| Job execution | Job resources |
+| :---: | :---: |
+| ![Job execution](gallery/job_completions.png) | ![Job resources](gallery/scatterplot.png) |
