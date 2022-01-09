@@ -29,3 +29,7 @@ lsf_stats = "lsf_stats:cli"
 
 [tool.black]
 skip_string_normalization = true
+
+[build-system]
+requires = ["poetry"]
+build-backend = "poetry.masonry.api"
