@@ -14,7 +14,7 @@ pyskim = "0.1.3"
 pandas = "^1.2.4"
 seaborn = "^0.11.1"
 matplotlib = "^3.4.2"
-humanize = "^3.9.0"
+humanize = ">=3.9,<5.0"
 tqdm = "^4.61.1"
 ipython = "^7.24.1"
 
