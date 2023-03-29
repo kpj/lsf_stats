@@ -20,7 +20,7 @@ ipython = "^7.24.1"
 
 [tool.poetry.dev-dependencies]
 bump2version = "^1.0.1"
-black = "^22.1"
+black = "^23.3"
 pytest = "^6.2.1"
 pytest-markdown = "^1.0.2"
 
